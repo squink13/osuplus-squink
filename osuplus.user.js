@@ -716,7 +716,9 @@
                                         <input type='radio' id='mc-formula-flashlight' name='mc-formula' value='flashlight'>
                                         <label for='mc-formula-flashlight' class='mp-label'>Flashlight</label> <a href='https://i.imgur.com/lNITeBx.png' target='_blank'>?</a><br>
                                         <input type='radio' id='mc-formula-average' name='mc-formula' value='average'>
-                                        <label for='mc-formula-average' class='mp-label'>Average</label> <a href='https://i.imgur.com/lNITeBx.png' target='_blank'>?</a>
+                                        <label for='mc-formula-average' class='mp-label'>Average</label> <a href='' target='_blank'>?</a><br>
+                                        <input type='radio' id='mc-formula-accuracy' name='mc-formula' value='accuracy'>
+                                        <label for='mc-formula-accuracy' class='mp-label'>Average Accuracy</label> <a href='' target='_blank'>?</a>
                                     </div>
                                 </div>
                             </div>
@@ -849,7 +851,8 @@
                         tbbonus: 0,
                         tops: 0,
                         modcombis: new Set(),
-                        usertotalscore: 0
+                        usertotalscore: 0,
+                        usertotalacc: 0
                     };
                 }
             }
@@ -872,6 +875,7 @@
                         removeFromArray(mods, "NF");
                         userStats[score.user_id].modcombis.add(mods.join(","));
                         userStats[score.user_id].usertotalscore += score.score;
+                        userStats[score.user_id].usertotalacc += score.accuracy;
                     }
                 }
                 if(totalscore == 0){ // prevent divide by 0 if everyone gets 0
@@ -917,6 +921,9 @@
                 break;
             case "average":
                 mc = matchCostAverage(userStats, selectedMatches);
+                break;
+            case "accuracy":
+                mc = matchCostAccuracy(userStats, selectedMatches);
                 break;
             }
             var stats = {};
@@ -977,6 +984,16 @@
             return ans;
         }
 
+        function matchCostAccuracy(userStats, selectedMatches){
+            var ans = {};
+            for(let id in userStats){
+                if(userStats[id].plays > 0){
+                    ans[id] = (userStats[id].usertotalacc / userStats[id].plays) * 100;
+                }
+            }
+            return ans;
+        }
+
         function getUserDict(userMap, matches){
             var userDict = {};
             for(let id in userMap){
@@ -1018,7 +1035,8 @@
                             mods: score.mods,
                             team: score.match.team,
                             passed: score.passed,
-                            score: score.score
+                            score: score.score,
+                            accuracy: score.accuracy
                         })),
                         mods: event.game.mods,
                         id: event.game.id,
