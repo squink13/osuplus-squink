@@ -2,6 +2,8 @@
 
 A userscript to add features to your boring osu! web pages.
 
+This fork adds a rudimentary implementation for average accuracy and average score formulas in match costs
+
 Forum: https://osu.ppy.sh/community/forums/topics/408541 \
 Discord: https://discord.gg/mzssqXQepM
 
